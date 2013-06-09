@@ -13,7 +13,7 @@ public class SillyGit {
 	}
 
 	private static void explore(GitRepository repo) throws IOException {
-		String commitHash = repo.getRefHash(repo.getHeadHash());
+		String commitHash = repo.getRefHash(repo.getHeadRef());
 		GitCommitObject commitObject = repo.getCommitObject(commitHash);
 		System.out.println(commitObject.dump());
 		GitTreeObject treeObject = commitObject.getTreeObject();

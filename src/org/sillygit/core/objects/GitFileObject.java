@@ -1,5 +1,6 @@
 package org.sillygit.core.objects;
 import java.io.File;
+import java.io.IOException;
 
 public abstract class GitFileObject extends GitObject {
 
@@ -20,10 +21,7 @@ public abstract class GitFileObject extends GitObject {
 		return path;
 	}
 
-	public abstract String getType();
+	public abstract GitObject getEntry(String string) throws IOException;
 
-	public abstract GitFileObject getEntry(String string);
-
-
-
+	public abstract String getContent() throws IOException;
 }

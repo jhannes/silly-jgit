@@ -34,11 +34,26 @@ public class Util {
 		return result.length() > 0 ? result.toString() : null;
 	}
 
+	public static String asString(InputStream inputStream) throws IOException {
+		StringBuilder result = new StringBuilder();
+		int c;
+		while ((c = inputStream.read()) != -1) {
+			result.append((char)c);
+		}
+		return result.length() > 0 ? result.toString() : null;
+	}
+
 	public static String leftPad(String string, int length, char c) {
 		if (string == null) return null;
 		StringBuilder result = new StringBuilder();
 		while (length-- > string.length()) result.append(c);
 		return result + string;
 	}
+
+	public static void validateEquals(String actual, String expected) {
+		if (!actual.equals(expected))
+			throw new RuntimeException("Unexpected - <" + actual + "> should have been <" + expected + ">");
+	}
+
 
 }

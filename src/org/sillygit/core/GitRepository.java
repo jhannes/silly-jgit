@@ -15,14 +15,13 @@ public class GitRepository {
 		this.repository = repository;
 	}
 
-	public String getRefHash(String head) throws IOException {
-		return Util.asString(new File(repository, head.split(" ")[1].trim())).trim();
+	public String getRefHash(String ref) throws IOException {
+		return Util.asString(new File(repository, ref)).trim();
 	}
 
-	public String getHeadHash() throws IOException {
-		return Util.asString(new File(repository, "HEAD"));
+	public String getHeadRef() throws IOException {
+		return Util.asString(new File(repository, "HEAD")).split(" ")[1].trim();
 	}
-
 
 	public GitCommitObject getCommitObject(String hash) {
 		return new GitCommitObject(repository, hash);

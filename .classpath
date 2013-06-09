@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="C:/Users/johannes/.m2/repository/org/easytesting/fest-assert-core/2.0M8/fest-assert-core-2.0M8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/johannes/.m2/repository/org/easytesting/fest-util/1.2.3/fest-util-1.2.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
