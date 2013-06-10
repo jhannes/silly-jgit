@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.sillygit.util.Util;
@@ -14,6 +15,11 @@ public class GitTreeObject extends GitFileObject {
 
 	public GitTreeObject(File repository, String hash, String octalMode, String path) throws IOException {
 		super(repository, hash, octalMode, path);
+	}
+
+	public GitTreeObject(File repository, String path, GitFileObject[] entries) {
+		super(repository, null, "040000", path);
+		this.entries = new ArrayList<>(Arrays.asList(entries));
 	}
 
 	public List<GitFileObject> getEntries() throws IOException {
@@ -87,5 +93,24 @@ public class GitTreeObject extends GitFileObject {
 			result.append(Util.leftPad(Integer.toHexString(inputStream.read()), 2, '0'));
 		}
 		return result.toString();
+	}
+
+	public static GitTreeObject writeTree(File repository, String path, GitFileObject[] entries) throws IOException {
+		GitTreeObject tree = new GitTreeObject(repository, path, entries);
+		tree.write();
+		return tree;
+	}
+
+	private void write() throws IOException {
+		try (GitObjectOutputStream output = new GitObjectOutputStream(repository, "tree")) {
+			for (GitFileObject entry : entries) {
+				output.write(entry.getOctalMode().getBytes());
+				output.write(' ');
+				output.write(entry.getPath().getBytes());
+				output.write((byte)0);
+				output.write(entry.getBinaryHash());
+			}
+			this.hash = output.closeAndGetHash();
+		}
 	}
 }

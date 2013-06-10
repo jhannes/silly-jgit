@@ -114,4 +114,20 @@ public class GitCommitObject extends GitObject {
 			this.comment = Util.asString(inputStream);
 		}
 	}
+
+	public static GitCommitObject writeCommit(File repository, GitTreeObject commitTree, String author, String comment, GitCommitObject parent) throws IOException {
+		GitCommitObject commit = new GitCommitObject(repository, null);
+		try (GitObjectOutputStream output = new GitObjectOutputStream(repository, "commit")) {
+			output.write(("tree " + commitTree.getHash() + "\n").getBytes());
+			if (parent != null) {
+				output.write(("parent " + parent.getHash() + "\n").getBytes());
+			}
+			output.write(("author " + author + " " + System.currentTimeMillis()/1000 + " +0" + "\n") .getBytes());
+			output.write(("committer " + author + " " + System.currentTimeMillis()/1000 + " +0" + "\n") .getBytes());
+			output.write('\n');
+			output.write(comment.getBytes());
+			commit.hash = output.closeAndGetHash();
+		}
+		return commit;
+	}
 }

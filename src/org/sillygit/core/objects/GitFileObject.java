@@ -21,7 +21,16 @@ public abstract class GitFileObject extends GitObject {
 		return path;
 	}
 
-	public abstract GitObject getEntry(String string) throws IOException;
+	public abstract GitFileObject getEntry(String string) throws IOException;
 
 	public abstract String getContent() throws IOException;
+
+	public byte[] getBinaryHash() {
+		byte[] result = new byte[20];
+		for (int i = 0; i < result.length; i++) {
+			result[i] = (byte)(Integer.parseInt(getHash().substring(i*2, i*2+2), 0x10) & 0xff);
+		}
+		return result;
+	}
+
 }

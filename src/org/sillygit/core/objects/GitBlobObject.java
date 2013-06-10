@@ -20,10 +20,11 @@ public class GitBlobObject extends GitFileObject {
 	}
 
 	@Override
-	public GitObject getEntry(String string) {
+	public GitFileObject getEntry(String string) {
 		throw new RuntimeException("Can't get entries in blob");
 	}
 
+	@Override
 	public String getContent() throws IOException {
 		readContent();
 		return content;
@@ -37,5 +38,18 @@ public class GitBlobObject extends GitFileObject {
 		}
 	}
 
+	public static GitBlobObject writeFile(File repository, String path, String octalMode, String content) throws IOException {
+		GitBlobObject result = new GitBlobObject(repository, null, octalMode, path);
+		result.write(content);
+		return result;
+	}
+
+	private void write(String content) throws IOException {
+		this.content = content;
+		try (GitObjectOutputStream output = new GitObjectOutputStream(repository, "blob")) {
+			output.write(content.getBytes());
+			this.hash = output.closeAndGetHash();
+		}
+	}
 
 }

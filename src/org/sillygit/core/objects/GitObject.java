@@ -48,10 +48,10 @@ public abstract class GitObject {
 	protected abstract void readContent() throws IOException;
 
 	protected InflaterInputStream getObjectStream() throws FileNotFoundException {
-		return new InflaterInputStream(new FileInputStream(getObjectFile(hash)));
+		return new InflaterInputStream(new FileInputStream(getObjectFile()));
 	}
 
-	private File getObjectFile(String hash) {
+	public File getObjectFile() {
 		return new File(repository, "objects/" + hash.substring(0,2) + "/" + hash.substring(2));
 	}
 

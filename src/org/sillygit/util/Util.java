@@ -1,9 +1,12 @@
 package org.sillygit.util;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Reader;
 
 
@@ -53,6 +56,36 @@ public class Util {
 	public static void validateEquals(String actual, String expected) {
 		if (!actual.equals(expected))
 			throw new RuntimeException("Unexpected - <" + actual + "> should have been <" + expected + ">");
+	}
+
+	public static void writeFile(File file, String string) throws IOException {
+		file.getParentFile().mkdirs();
+		try (FileWriter writer = new FileWriter(file)) {
+			writer.write(string);
+			writer.flush();
+		}
+	}
+
+	public static String asHexString(byte[] bytes) {
+		StringBuilder result = new StringBuilder();
+		for (int i=0; i<bytes.length; i++) {
+			result.append(leftPad(Integer.toHexString(0xff & bytes[i]), 2, '0'));
+		}
+		return result.toString();
+	}
+
+	public static void recursiveDelete(File file) {
+		if (file.isDirectory()) {
+			for (File subfile : file.listFiles()) {
+				recursiveDelete(subfile);
+			}
+		}
+		file.delete();
+	}
+
+	public static void copy(FileInputStream input, OutputStream output) throws IOException {
+		int c;
+		while ((c = input.read()) != -1) output.write((byte)c);
 	}
 
 
