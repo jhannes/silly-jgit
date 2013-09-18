@@ -11,11 +11,11 @@ import org.sillygit.util.Util;
 
 public class ExploreDirectory {
 
-	public static void main(String[] args) throws IOException {
-	    File repository = new File("C:\\Users\\johannes\\temp\\demo\\.git\\");
-		File headFile = new File(repository, Util.asString(new File(repository, "HEAD")).split(" ")[1].trim());
+    public static void main(String[] args) throws IOException {
+        File repository = new File("C:\\Users\\johannes\\temp\\demo\\.git\\");
+        File headFile = new File(repository, Util.asString(new File(repository, "HEAD")).split(" ")[1].trim());
 
-		String commitHash =  Util.asString(headFile).trim();
+        String commitHash =  Util.asString(headFile).trim();
         File commitFile = new File(repository, "objects/" + commitHash.substring(0,2) + "/" + commitHash.substring(2));
         try(final InputStream inputStream = new InflaterInputStream(new FileInputStream(commitFile))) {
             System.out.println(Util.asString(inputStream).replace('\0', ' '));
@@ -60,5 +60,5 @@ public class ExploreDirectory {
             //System.out.println(content);
             System.out.println(length + " => " + content.length());
         }
-	}
+    }
 }
